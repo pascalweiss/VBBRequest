@@ -7,11 +7,12 @@ vbbReq.py
 ---------
 Script for communication with the hafas server. 
 
-**Usage**
-`request(departure, destination, date, time, vehicle, direct, enableFoot):`<br>
+**Usage**<br>
 Call this method to get a list object of connections, based on your parameters.
+`request(departure, destination, date, time, vehicle, direct, enableFoot):`<br>
 
-*Parameters*<br>
+
+**Parameters**<br>
 * departure: String with station ID. You get a list with all station IDs in Berlin here: http://daten.berlin.de/kategorie/verkehr *(Download the current GTFS packed and look in stops.txt)*
 * destination: Same as departure
 * date: String like this: `'20140612'`
@@ -20,7 +21,7 @@ Call this method to get a list object of connections, based on your parameters.
 * direct: Use `'1'` if you only want direct connections. If you also accept indirect connections, use `'0'` 
 * enableFoot: `False` if you don't want to walk. Else `'True'`
 
-*Return*<br>
+**Return**<br>
 You'll get a list object with the recieved data. If you want an example, just run `test():` or look [here](https://github.com/pascalweiss/vbbRequest/blob/master/example_request_vbbReq.txt)
   
 **Requirements** <br>
@@ -36,7 +37,10 @@ This is an example on how you can use vbbReq.py. It simulates a BVG scoreboard f
 ![](http://www.upload-pictures.de/bild.php/57662,vbbreqscreenshotkopieJ55ZT.png) 
 
 **TODO** <br>
-There could be an input field, where the user can enter the name for his desired station. 
+* User input. At least for quitting the script. This should be one of the next steps (The curses modul is making your terminal look very messy after `ctrl + c`...)
+* More Stations. Right now the script only asks for connections from Oberlandstr/Germaniastr. (This is a bus station in Berlin). Although you can request info for every station.
+* Different transport styles. Right now, the script only asks for bus connections.
+* VBB gives informations about accessibility. For example if a elevator is broken.
 
 conReq.xml
 ----------
