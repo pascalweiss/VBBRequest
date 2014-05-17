@@ -44,13 +44,13 @@ def sortConnectionList(connectionList):
 
 
 def printConnectionList(connectionList):
+    screen.clear()
     terminalSize = os.popen('stty size', 'r').read().split()
     terminalWidth = int(terminalSize[1])
     terminalHeight = int(terminalSize[0])
     string = ''
     row = 1
     column = 0
-    #was geht
     for connection in connectionList:
 	if row < terminalHeight-2:
             row += 1
