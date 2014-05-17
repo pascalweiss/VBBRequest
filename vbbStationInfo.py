@@ -50,14 +50,13 @@ def printConnectionList(connectionList):
     string = ''
     row = 1
     column = 0
+    #was geht
     for connection in connectionList:
 	if row < terminalHeight-2:
             row += 1
             dict = connection[1]
             screen.addstr(row, 1, dict['vehicle'])
-            screen.refresh()
             screen.addstr(row, 12, dict['direction'])
-            screen.refresh()
             screen.addstr(row, terminalWidth-8, dict['depTime'])
             screen.refresh()
 
