@@ -44,7 +44,7 @@ This is used by vbbReq.py as a template for it's posts to the hafas server.
 
 Links
 -----
-* http://www.vbb.de/t_de/article/webservices/schnittstellen-fuer-webentwickler/5070.html
+* Description by VBB: http://www.vbb.de/t_de/article/webservices/schnittstellen-fuer-webentwickler/5070.html
 * Interface description by hafas: http://demo.hafas.de/xml/vbb/dai/hafasXMLInterface.xsd
 * Example requests with http: http://images.vbb.de/assets/downloads/file/20930.zip (369.5 KB)
 
