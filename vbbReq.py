@@ -140,4 +140,4 @@ def printConnectionsList(connectionsList):
     
 
 # Uncomment to test this
-test()
+#test()
