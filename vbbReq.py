@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#! /usr/bin/python2.7
 # _*_ coding: latin-1 _*_ 
 #TODO brauch ich das???
 import requests

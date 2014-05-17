@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#! /usr/bin/python2.7
 # _*_ coding: utf-8 _*_
 import vbbReq
 import time 
@@ -52,7 +52,7 @@ def printConnectionList(connectionList):
     row = 1
     column = 0
     for connection in connectionList:
-	if row < terminalHeight-2:
+        if row < terminalHeight-3:
             row += 1
             dict = connection[1]
             screen.addstr(row, 1, dict['vehicle'])
