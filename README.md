@@ -37,6 +37,7 @@ This is an example on how you can use vbbReq.py. It simulates a BVG scoreboard f
 ![](http://www.upload-pictures.de/bild.php/57662,vbbreqscreenshotkopieJ55ZT.png) 
 
 **TODO** <br>
+*Just some suggestions*
 * User input. At least for quitting the script. This should be one of the next steps (The curses modul is making your terminal look very messy after `ctrl + c`...)
 * More Stations. Right now the script only asks for connections from Oberlandstr/Germaniastr. (This is a bus station in Berlin). Although you can request info for every station.
 * Different transport styles. Right now, the script only asks for bus connections.
