@@ -8,7 +8,7 @@ vbbReq.py
 Script for communication with the hafas server. 
 
 **Usage**<br>
-Call this method to get a list object of connections, based on your parameters.
+Call this method to get a list object of connections, based on your parameters. <br>
 `request(departure, destination, date, time, vehicle, direct, enableFoot):`<br>
 
 
