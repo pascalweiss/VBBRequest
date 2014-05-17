@@ -26,6 +26,7 @@ You'll get a list object with the recieved data. If you want an example, just ru
   
 **Requirements** <br>
 * requests.py
+* python2.7 *(I tested it only with 2.7.5, so I don't garantuee, that it works with other versions)*
 
 
 vbbStationInfo.py
