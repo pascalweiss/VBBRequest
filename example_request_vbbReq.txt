@@ -1,3 +1,10 @@
+# Call vbbReq.request like that:
+
+vbbRequest.request('9068205', '9017101', '20140516', '12:00', '0001000000000000', '0', True):
+#    ....................
+
+# This is what you'll get:
+
 [
     [                                                               # First connection
         '12:08:00',                                                 # Beginning of connection
