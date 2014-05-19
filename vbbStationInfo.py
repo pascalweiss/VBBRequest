@@ -137,22 +137,22 @@ def debugPrint(something):
 def nextRequestTime(request, lastTime):
     con = request[0]
     nextTime = con[0][:5]+':59'
-    if nextTime == lastTime:
 	nextHour = int(lastTime[:2])
-        nextMinute = int(lastTime[3:][:2])
+    nextMinute = int(lastTime[3:][:2])
+    if nextTime == lastTime:
         nextMinute += 1
         if nextMinute > 59:
             nextMinute = nextMinute - 60
-	    nextHour += 1
-        nextMinute = str(nextMinute)
+	        nextHour += 1
+            if nextHour > 23:
+                nextHour = nextHour - 24
+    nextMinute = str(nextMinute)
 	nextHour = str(nextHour)
 	if len(nextMinute) < 2:
 	    nextMinute = '0' + nextMinute
 	if len(nextHour) < 2:
 	    nextHour = '0'+nextHour
 	nextTime = nextHour + ':' + nextMinute + ':59' 
-    else:
-        return nextTime
     return nextTime
 
 
