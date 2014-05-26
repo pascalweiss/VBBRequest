@@ -6,7 +6,7 @@ from operator import itemgetter
 from subprocess import call
 import os
 import curses
-import pywunderground 
+#import pywunderground 
 
 screen = curses.initscr() 
 curses.noecho() 
