@@ -138,8 +138,8 @@ def debugPrint(something):
 def nextRequestTime(request, lastTime):
     con = request[0]
     nextTime = con[0][:5] + ':59'
-    nextHour = int(lastTime[:2])
-    nextMinute = int(lastTime[3:][:2])
+    nextHour = int(nextTime[:2])
+    nextMinute = int(nextTime[3:][:2])
     if nextTime == lastTime:
         nextMinute += 1
         if nextMinute > 59:
