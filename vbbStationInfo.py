@@ -6,6 +6,7 @@ from operator import itemgetter
 from subprocess import call
 import os
 import curses
+import pywunderground 
 
 screen = curses.initscr() 
 curses.noecho() 
@@ -137,22 +138,22 @@ def debugPrint(something):
 def nextRequestTime(request, lastTime):
     con = request[0]
     nextTime = con[0][:5]+':59'
-	nextHour = int(lastTime[:2])
+    nextHour = int(lastTime[:2])
     nextMinute = int(lastTime[3:][:2])
     if nextTime == lastTime:
         nextMinute += 1
         if nextMinute > 59:
             nextMinute = nextMinute - 60
-	        nextHour += 1
+            nextHour += 1
             if nextHour > 23:
                 nextHour = nextHour - 24
     nextMinute = str(nextMinute)
-	nextHour = str(nextHour)
-	if len(nextMinute) < 2:
-	    nextMinute = '0' + nextMinute
-	if len(nextHour) < 2:
-	    nextHour = '0'+nextHour
-	nextTime = nextHour + ':' + nextMinute + ':59' 
+    nextHour = str(nextHour)
+    if len(nextMinute) < 2:
+        nextMinute = '0' + nextMinute
+    if len(nextHour) < 2:
+        nextHour = '0'+nextHour
+    nextTime = nextHour + ':' + nextMinute + ':59' 
     return nextTime
 
 
@@ -165,7 +166,6 @@ def printRequestNumber(number):
 
 if __name__ == '__main__':
     cursesSettings()
-
     input = ''
     nextReqTime = '23:23:23'
     currentDate = ''
