@@ -35,13 +35,14 @@ def sortConnectionList(connectionList):
                 afterMidnightList.append(connection)
             else:
                 newList.append(connection)
-    if highestHour > 22:
+    if int(highestHour) > 22:
         afterMidnightList = sorted(afterMidnightList, key=itemgetter(0))
         newList = sorted(newList, key=itemgetter(0))
         result = newList + afterMidnightList
     else:
         result = sorted((afterMidnightList + newList), key=itemgetter(0))
-    return result
+        return result
+
 
 
 def printConnectionList(connectionList):
