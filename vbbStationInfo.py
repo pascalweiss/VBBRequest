@@ -39,6 +39,7 @@ def sortConnectionList(connectionList):
         afterMidnightList = sorted(afterMidnightList, key=itemgetter(0))
         newList = sorted(newList, key=itemgetter(0))
         result = newList + afterMidnightList
+        return result
     else:
         result = sorted((afterMidnightList + newList), key=itemgetter(0))
         return result
@@ -64,6 +65,7 @@ def printConnectionList(connectionList):
 
 def oberlandstrReqeust(time, date):
     list =[]
+    time = '22:00'
     bus = '0001000000000000'
     komturstr = vbbReq.request('9068205', '9069203', date, time, bus, '1',False)
     hermannstr = vbbReq.request('9068205','9079221', date, time, bus, '1',False)
