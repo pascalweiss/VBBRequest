@@ -65,7 +65,7 @@ def printConnectionList(connectionList):
 
 def oberlandstrReqeust(time, date):
     list =[]
-    time = '22:00'
+    time = '11:00'
     bus = '0001000000000000'
     komturstr = vbbReq.request('9068205', '9069203', date, time, bus, '1',False)
     hermannstr = vbbReq.request('9068205','9079221', date, time, bus, '1',False)
