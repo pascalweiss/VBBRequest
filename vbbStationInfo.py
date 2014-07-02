@@ -207,12 +207,12 @@ if __name__ == '__main__':
         if currentTime == nextReqTime or firstRequest == True:
             firstRequest = False
             number += 1
-            printRequestNumber(number)
             request = oberlandstrReqeust(currentTimeForRequest, currentDateForRequest)
             if request:
                 printConnectionList(request)
                 nextReqTime = nextRequestTime(request, nextReqTime)
             else:
                 nextReqTime = requestIn5Min()
+            printRequestNumber(number)
         time.sleep(0.5)
     curses.endwin()
