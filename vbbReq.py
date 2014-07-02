@@ -15,20 +15,22 @@ def test ():
     bus = '0001000000000000'
     # If the example doesn't work, you might need to update the date-parameter in the
     # next line.
-    postDict = newPostDict('9068205', '9017101', '20140516', '12:00', bus, '0')
+    postDict = newPostDict('9068205', '9017101', '20140702', '12:00', bus, '0')
     postXML = newPostXML(postDict)
     requestXML = requestDataFromVBB(postXML)
-    connectionsList = getConnectionsList(requestXML, False)
-    printConnectionsList(connectionsList)
+    if requestXML is not None:
+        connectionsList = getConnectionsList(requestXML, False)
+        printConnectionsList(connectionsList)
     #requestXML.close()
 
 def request(departure, destination, date, time, vehicle, direct, enableFoot):
     postDict = newPostDict(departure, destination, date, time, vehicle, direct)
     postXML = newPostXML(postDict)
     requestXML = requestDataFromVBB(postXML)
-    connectionsList = getConnectionsList(requestXML, enableFoot)
-    #requestXML.close()
-    return connectionsList
+    if requestXML is not None:
+        connectionsList = getConnectionsList(requestXML, enableFoot)
+        #requestXML.close()
+        return connectionsList
 
 
 def getConnectionsList(requestXML, enableFoot):
@@ -109,13 +111,14 @@ def newPostDict(startStation, destStation, date, time, vehicle, direct):
 # Use def newPostXML(...) as parameter
 def requestDataFromVBB(postXML):
     URL = "http://demo.hafas.de/bin/pub/vbb-fahrinfo/relaunch2011/extxml.exe/"
-    request = requests.post(URL, data=postXML).text
-    return request.encode('latin-1')
-    #requestXML = codecs.open('output.xml', 'w+', 'utf-8-sig')
-    #requestXML.write(request)
-    #return requestXML 
-    #return codecs.decode(request, 'utf-8-sig')
-    #return request.encode('utf-8-sig')
+    x = 0
+    while x != 3:
+        try:
+            request = requests.post(URL, data=postXML).text
+            return request.encode('latin-1')
+            break;
+        except:
+            x += 1
 
 def printConnectionDict(conDict):
     print conDict

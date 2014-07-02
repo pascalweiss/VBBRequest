@@ -70,10 +70,13 @@ def oberlandstrReqeust(time, date):
     hermannstr = vbbReq.request('9068205','9079221', date, time, bus, '1',False)
     mehringdamm = vbbReq.request('9068205','9017101', date, time, bus, '0',False)
     #altTempelhof = vbbReq.request('9068205','9068202', date, time, bus, '1')
-    list.append(komturstr)
-    list.append(mehringdamm)
-    #list.append(altTempelhof)
-    list.append(hermannstr)
+    if komturstr is not None:
+        list.append(komturstr)
+    if mehringdamm is not None:
+        list.append(mehringdamm)
+#list.append(altTempelhof)
+    if hermannstr is not None:
+        list.append(hermannstr)
     list = sortConnectionList(list)
     return list
 
@@ -158,6 +161,25 @@ def nextRequestTime(request, lastTime):
     nextTime = nextHour + ':' + nextMinute + ':59' 
     return nextTime
 
+def requestIn5Min():
+    nextTime = getCurrentTime()
+    nextHour = int(nextTime[:2])
+    nextMinute = int(nextTime[3:][:2])
+    nextMinute += 5
+    if nextMinute >= 60:
+        nextMinute -= 60
+        nextHour += 1
+        if nextHour > 23:
+            nextHour -= 24
+    nextMinute = str(nextMinute)
+    nextHour = str(nextHour)
+    if len(nextMinute) < 2:
+        nextMinute = '0' + nextMinute
+    if len(nextHour) < 2:
+        nextHour = '0'+nextHour
+    nextTime = nextHour + ':' + nextMinute + ':59' 
+    return nextTime
+    
 
 def printRequestNumber(number):
     terminalSize = os.popen('stty size', 'r').read().split()
@@ -183,13 +205,14 @@ if __name__ == '__main__':
         debugString = 'next request: '+nextReqTime
         debugPrint(debugString)
         if currentTime == nextReqTime or firstRequest == True:
-            request = oberlandstrReqeust(currentTimeForRequest, currentDateForRequest)
-            printConnectionList(request)
-            nextReqTime = nextRequestTime(request, nextReqTime)
-            printRequestNumber(number)
             firstRequest = False
             number += 1
-        #event = screen.getch() 
-        #if event == ord("q"): break 
+            printRequestNumber(number)
+            request = oberlandstrReqeust(currentTimeForRequest, currentDateForRequest)
+            if request:
+                printConnectionList(request)
+                nextReqTime = nextRequestTime(request, nextReqTime)
+            else:
+                nextReqTime = requestIn5Min()
         time.sleep(0.5)
     curses.endwin()
