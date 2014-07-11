@@ -201,11 +201,12 @@ if __name__ == '__main__':
         currentDateForRequest = getCurrentDateForRequest()
         currentTime = getCurrentTime()
         currentMinute = int(currentTime[3:][:2])
+        currentSecond = int(currentTime[6:])
         currentDate = getCurrentDate()
         printCurrentTimeAndDate()
         debugString = 'next request: '+nextReqTime
         debugPrint(debugString)
-        if currentTime == nextReqTime or firstRequest == True or currentMinute % 15 == 0:
+        if currentTime == nextReqTime or firstRequest == True or (currentMinute % 15 == 0 and currentSecond == 59):
             firstRequest = False
             number += 1
             request = oberlandstrReqeust(currentTimeForRequest, currentDateForRequest)
