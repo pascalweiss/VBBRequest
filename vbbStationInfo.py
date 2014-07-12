@@ -209,6 +209,7 @@ if __name__ == '__main__':
         if currentTime == nextReqTime or firstRequest == True or (currentMinute % 15 == 0 and currentSecond == 59):
             firstRequest = False
             number += 1
+            printRequestNumber("Connecting...")
             request = oberlandstrReqeust(currentTimeForRequest, currentDateForRequest)
             if request:
                 printConnectionList(request)
