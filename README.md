@@ -1,4 +1,4 @@
-vbbRequest
+VBBRequest
 ==========
 
 This little project lets you request train/bus data from BVG/VBB via python script. Therefor it uses an open interface provided by [hafas](http://www.hacon.de/hafas). 
