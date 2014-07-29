@@ -114,7 +114,7 @@ def requestDataFromVBB(postXML):
     x = 0
     while x != 3:
         try:
-            request = requests.post(URL, data=postXML).text
+            request = requests.post(URL, data=postXML, timeout=60).text
             return request.encode('latin-1')
             break;
         except:
