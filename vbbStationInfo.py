@@ -140,6 +140,27 @@ def debugPrint(something):
         screen.addstr(terminalHeight-1,0,str(something))
     screen.refresh()
 
+def temperaturePrint(something):
+    temp_txt = ""
+    with open("./WeatherScraper/berlin_germaniastr_temp", "r") as f:
+        temp_txt = f.read()
+    rain_prob_txt = ""
+    with open("./WeatherScraper/berlin_rain_prob", "r") as f:
+        rain_prob_txt = f.read()
+    sunshine_length_txt = ""
+    with open("./WeatherScraper/berlin_sunshine_length", "r") as f:
+        sunshine_length_txt = f.read()
+    weather_txt = "sun: " + sunshine_length_txt + "  rain: " + rain_prob_txt + "  temp: " + temp_txt
+    terminalSize = os.popen('stty size', 'r').read().split()
+    terminalHeight = int(terminalSize[0])  
+    terminalWidth = int(terminalSize[1]) 
+    screen.addstr(terminalHeight-1,terminalWidth-len(weather_txt)-1,weather_txt)
+    if type(something) == 'str':
+	screen.addstr(terminalHeight-1,0, something)
+    else:
+        screen.addstr(terminalHeight-1,0,str(something))
+    screen.refresh()
+
 def nextRequestTime(request, lastTime):
     con = request[0]
     nextTime = con[0][:5] + ':59'
@@ -205,8 +226,10 @@ if __name__ == '__main__':
         currentDate = getCurrentDate()
         printCurrentTimeAndDate()
         debugString = 'next request: '+nextReqTime
-        debugPrint(debugString)
+        temperaturePrint(debugString)
+        #debugPrint(debugString)
         if currentTime == nextReqTime or firstRequest == True or (currentMinute % 15 == 0 and currentSecond == 59):
+            os.system("./WeatherScraper/run.sh")
             firstRequest = False
             number += 1
             printRequestNumber("Connecting...")
