@@ -1,0 +1,3 @@
+[submodule "WeatherScraper"]
+	path = WeatherScraper
+	url = https://github.com/pascalweiss/WeatherScraper.git
