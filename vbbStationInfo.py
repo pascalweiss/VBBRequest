@@ -229,7 +229,7 @@ if __name__ == '__main__':
         temperaturePrint(debugString)
         #debugPrint(debugString)
         if currentTime == nextReqTime or firstRequest == True or (currentMinute % 15 == 0 and currentSecond == 59):
-            os.system("./WeatherScraper/run.sh")
+            os.system("./run_weather_crawler.sh")
             firstRequest = False
             number += 1
             printRequestNumber("Connecting...")
