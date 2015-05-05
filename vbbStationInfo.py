@@ -10,6 +10,7 @@ from thread import start_new_thread
 #import pywunderground 
 
 screen = curses.initscr() 
+curses.start_color()
 curses.noecho() 
 curses.curs_set(0) 
 screen.keypad(1) 
@@ -155,7 +156,8 @@ def temperaturePrint(something):
     terminalSize = os.popen('stty size', 'r').read().split()
     terminalHeight = int(terminalSize[0])  
     terminalWidth = int(terminalSize[1]) 
-    screen.addstr(terminalHeight-1,terminalWidth-len(weather_txt)-1,weather_txt)
+    curses.init_pair(1, curses.COLOR_YELLOW, curses.COLOR_BLACK)
+    screen.addstr(terminalHeight-1,terminalWidth-len(weather_txt)-1,weather_txt, curses.color_pair(1))
     if type(something) == 'str':
 	screen.addstr(terminalHeight-1,0, something)
     else:
