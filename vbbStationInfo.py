@@ -6,6 +6,7 @@ from operator import itemgetter
 from subprocess import call
 import os
 import curses
+from thread import start_new_thread
 #import pywunderground 
 
 screen = curses.initscr() 
@@ -135,7 +136,7 @@ def debugPrint(something):
     hackText = 'Hacking BVG since 16.05.2014'
     screen.addstr(terminalHeight-1,terminalWidth-len(hackText)-1,hackText)
     if type(something) == 'str':
-	screen.addstr(terminalHeight-1,0, something)
+	    screen.addstr(terminalHeight-1,0, something)
     else:
         screen.addstr(terminalHeight-1,0,str(something))
     screen.refresh()
@@ -209,7 +210,19 @@ def printRequestNumber(number):
     screen.addstr(0,terminalWidth-10-len(str(number)), 'Requests: ' + str(number))
     screen.refresh()
 
-if __name__ == '__main__':
+def keyboardInput():
+    while True:
+        os.system("afplay /System/Library/Sounds/Funk.aiff")
+        input = raw_input()
+        if input == "q":
+            exit()
+
+def weatherCrawlerThread():
+    while True: 
+        os.system("./run_weather_crawler.sh")
+        time.sleep(300)
+
+def displayThread():
     cursesSettings()
     input = ''
     nextReqTime = '23:23:23'
@@ -229,7 +242,6 @@ if __name__ == '__main__':
         temperaturePrint(debugString)
         #debugPrint(debugString)
         if currentTime == nextReqTime or firstRequest == True or (currentMinute % 15 == 0 and currentSecond == 59):
-            os.system("./run_weather_crawler.sh")
             firstRequest = False
             number += 1
             printRequestNumber("Connecting...")
@@ -241,4 +253,15 @@ if __name__ == '__main__':
                 nextReqTime = requestIn5Min()
             printRequestNumber(number)
         time.sleep(0.5)
-    curses.endwin()
+
+if __name__ == '__main__':
+    start_new_thread(displayThread, ())
+    start_new_thread(weatherCrawlerThread, ())
+    while True:
+        x = screen.getch()
+        if x == 113:
+            curses.nocbreak()
+            screen.keypad(0)
+            curses.echo()
+            curses.endwin()
+            exit()
