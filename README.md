@@ -1,7 +1,6 @@
 VBBRequest
 ==========
-
-This little project lets you request train/bus data from BVG/VBB via python script. Therefor it uses an open interface provided by [hafas](http://www.hacon.de/hafas). 
+This was my first little python project, and I'm still using it (with a raspberry pi and a mini-usb-bus-powered monitor for 30 bucks on ebay) It lets you request train/bus data from BVG/VBB. Therefore it uses an open interface provided by [hafas](http://www.hacon.de/hafas). 
 
 vbbReq.py
 ---------
@@ -35,7 +34,7 @@ This is an example on how you can use vbbReq.py. It simulates a BVG scoreboard f
 
 **Pictures** <br>
 <br>
-![](http://www.upload-pictures.de/bild.php/57662,vbbreqscreenshotkopieJ55ZT.png) 
+![](https://github.com/pascalweiss/pics/blob/master/vbb_stationInfo.png?raw=true) 
 
 **TODO** <br>
 *Just some suggestions*
