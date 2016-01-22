@@ -1,3 +1,5 @@
+Unfortunately it isn't compatible to the VBB-API, anymore... Hope I can fix it, soon
+
 VBBRequest
 ==========
 This was my first little python project, and I'm still using it (with a raspberry pi and a mini-usb-bus-powered monitor for 30 bucks on ebay) It lets you request train/bus data from BVG/VBB. Therefore it uses an open interface provided by [hafas](http://www.hacon.de/hafas). 
