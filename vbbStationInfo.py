@@ -1,12 +1,16 @@
-#! /usr/bin/python2.7
-# _*_ coding: utf-8 _*_
-import vbbReq
 import time 
 from operator import itemgetter
 from subprocess import call
 import os
+import re
 import curses
-from thread import start_new_thread
+from _thread import start_new_thread
+from bvggrabber.api.actualdeparture import ActualDepartureQueryApi
+from wetter24grabber.api.queryapi import WetterQueryApi
+
+ 
+
+
 #import pywunderground 
 
 screen = curses.initscr() 
@@ -48,7 +52,11 @@ def sortConnectionList(connectionList):
 
 
 
-def printConnectionList(connectionList):
+# To alter the request procedure, it must be ensured, that 
+# The new approach yields a list of dictionaries, where each 
+# dict represents one connection. 
+# Each connection has a key for 'vehicle', for 'direction' and for 'depTime'
+def printConnectionList(departures):
     screen.clear()
     terminalSize = os.popen('stty size', 'r').read().split()
     terminalWidth = int(terminalSize[1])
@@ -56,31 +64,27 @@ def printConnectionList(connectionList):
     string = ''
     row = 1
     column = 0
-    for connection in connectionList:
+    for dep in departures:
         if row < terminalHeight-3:
             row += 1
-            dict = connection[1]
-            screen.addstr(row, 1, dict['vehicle'])
-            screen.addstr(row, 12, dict['direction'])
-            screen.addstr(row, terminalWidth-8, dict['depTime'])
+            screen.addstr(row, 1, re.sub('Bus ', '', dep.line))
+            screen.addstr(row, 12, dep.end)
+            screen.addstr(row, terminalWidth-8, dep.when.strftime("%H:%M"))
             screen.refresh()
 
-def oberlandstrReqeust(time, date):
-    list =[]
-    bus = '0001000000000000'
-    komturstr = vbbReq.request('9068205', '9069203', date, time, bus, '1',False)
-    hermannstr = vbbReq.request('9068205','9079221', date, time, bus, '1',False)
-    mehringdamm = vbbReq.request('9068205','9017101', date, time, bus, '0',False)
-    #altTempelhof = vbbReq.request('9068205','9068202', date, time, bus, '1')
-    if komturstr is not None:
-        list.append(komturstr)
-    if mehringdamm is not None:
-        list.append(mehringdamm)
-#list.append(altTempelhof)
-    if hermannstr is not None:
-        list.append(hermannstr)
-    list = sortConnectionList(list)
-    return list
+def oberlandstrReqeust():
+    departures = None
+    #try:
+        #a = ActualDepartureQueryApi("Oberlandstr./Germaniastr. (Berlin)").call()
+        #departures = a[0][1]
+    #except: 
+    #    None
+    #else: 
+    #    None
+    a = ActualDepartureQueryApi("Oberlandstr./Germaniastr. (Berlin)").call()
+    departures = a.departures[0][1]
+    return departures
+    
 
 def getCurrentDate():
     return time.strftime('%d:%m:%Y')
@@ -143,30 +147,28 @@ def debugPrint(something):
     screen.refresh()
 
 def temperaturePrint(something):
-    temp_txt = ""
-    with open("./WeatherScraper/berlin_germaniastr_temp", "r") as f:
-        temp_txt = f.read()
-    rain_prob_txt = ""
-    with open("./WeatherScraper/berlin_rain_prob", "r") as f:
-        rain_prob_txt = f.read()
-    sunshine_length_txt = ""
-    with open("./WeatherScraper/berlin_sunshine_length", "r") as f:
-        sunshine_length_txt = f.read()
-    weather_txt = "sun: " + sunshine_length_txt + "  rain: " + rain_prob_txt + "  temp: " + temp_txt
+
+    api = WetterQueryApi("12099", "16156188")
+    response = api.call()
+
+    temp_txt = response.temp + "C"
+    rain_prob_txt = response.rain + "mm"
+    sunshine_length_txt = response.sun + "h"
+
+    weather_txt = "sun: " + response.sun + "h" + "  rain: " + rain_prob_txt + "  temp: " + response.temp + "C" + "  wind: " + response.wind + "km/h"
     terminalSize = os.popen('stty size', 'r').read().split()
     terminalHeight = int(terminalSize[0])  
     terminalWidth = int(terminalSize[1]) 
     curses.init_pair(1, curses.COLOR_YELLOW, curses.COLOR_BLACK)
     screen.addstr(terminalHeight-1,terminalWidth-len(weather_txt)-1,weather_txt, curses.color_pair(1))
     if type(something) == 'str':
-	screen.addstr(terminalHeight-1,0, something)
+        screen.addstr(terminalHeight-1,0, something)
     else:
         screen.addstr(terminalHeight-1,0,str(something))
     screen.refresh()
 
-def nextRequestTime(request, lastTime):
-    con = request[0]
-    nextTime = con[0][:5] + ':59'
+def nextRequestTime(departures, lastTime):
+    nextTime = departures[0].now.strftime("%H:%M") + ':59'
     nextHour = int(nextTime[:2])
     nextMinute = int(nextTime[3:][:2])
     if nextTime == lastTime:
@@ -219,11 +221,6 @@ def keyboardInput():
         if input == "q":
             exit()
 
-def weatherCrawlerThread():
-    while True: 
-        os.system("./run_weather_crawler.sh")
-        time.sleep(300)
-
 def displayThread():
     cursesSettings()
     input = ''
@@ -240,25 +237,24 @@ def displayThread():
         currentSecond = int(currentTime[6:])
         currentDate = getCurrentDate()
         printCurrentTimeAndDate()
-        debugString = 'next request: '+nextReqTime
-        temperaturePrint(debugString)
-        #debugPrint(debugString)
         if currentTime == nextReqTime or firstRequest == True or (currentMinute % 15 == 0 and currentSecond == 59):
             firstRequest = False
             number += 1
             printRequestNumber("Connecting...")
-            request = oberlandstrReqeust(currentTimeForRequest, currentDateForRequest)
-            if request:
-                printConnectionList(request)
-                nextReqTime = nextRequestTime(request, nextReqTime)
+            departures = oberlandstrReqeust()
+            if departures:
+                printConnectionList(departures)
+                nextReqTime = nextRequestTime(departures, nextReqTime)
+                x=1
             else:
                 nextReqTime = requestIn5Min()
             printRequestNumber(number)
+            debugString = 'next request: '+nextReqTime
+            temperaturePrint(debugString)
         time.sleep(0.5)
 
 if __name__ == '__main__':
     start_new_thread(displayThread, ())
-    start_new_thread(weatherCrawlerThread, ())
     while True:
         x = screen.getch()
         if x == 113:
