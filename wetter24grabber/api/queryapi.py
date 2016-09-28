@@ -30,7 +30,7 @@ class WetterQueryApi(object):
                 clean(rain)
             )
         else: 
-            return Response(False, self.plz, self.region, None, None, None) 
+            return Response(False, self.plz, self.region, None, None, None, None) 
 
 
 

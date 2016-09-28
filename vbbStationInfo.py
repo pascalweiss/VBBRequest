@@ -106,7 +106,6 @@ def getCurrentTime ():
         seconds = '0' + str(ttime[5])
     else:
         seconds = str(ttime[5])
-
     return hours + ':' + minutes + ':' + seconds
 
 
@@ -168,7 +167,7 @@ def temperaturePrint(something):
     screen.refresh()
 
 def nextRequestTime(departures, lastTime):
-    nextTime = departures[0].now.strftime("%H:%M") + ':59'
+    nextTime = departures[0].when.strftime("%H:%M") + ':59'
     nextHour = int(nextTime[:2])
     nextMinute = int(nextTime[3:][:2])
     if nextTime == lastTime:
@@ -183,7 +182,7 @@ def nextRequestTime(departures, lastTime):
     if len(nextMinute) < 2:
         nextMinute = '0' + nextMinute
     if len(nextHour) < 2:
-        nextHour = '0'+nextHour
+        nextHour = '0'+ nextHour
     nextTime = nextHour + ':' + nextMinute + ':59' 
     return nextTime
 
