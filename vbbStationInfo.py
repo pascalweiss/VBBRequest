@@ -256,7 +256,8 @@ def displayThread():
                 nextReqTime = requestIn5Min()
             printRequestNumber(number)
             debugString = 'next request: '+nextReqTime
-            temperaturePrint(debugString)
+            #temperaturePrint(debugString)
+            temperaturePrint("")
         time.sleep(0.5)
 
 if __name__ == '__main__':
