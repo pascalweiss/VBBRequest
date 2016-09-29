@@ -76,7 +76,7 @@ def oberlandstrReqeust():
     departures = None
     try:
         a = ActualDepartureQueryApi("Oberlandstr./Germaniastr. (Berlin)").call()
-        departures = a[0][1]
+        departures = a.departures[0][1]
     except: 
         None
     else: 
@@ -145,28 +145,34 @@ def debugPrint(something):
 
 def temperaturePrint(something):
     response = None
+    temp_txt = ""
+    rain_prob_txt = ""
+    sunshine_length_txt = ""
+    
     api = WetterQueryApi("12099", "16156188")
     try:
         response = api.call()
         temp_txt = response.temp + "C"
         rain_prob_txt = response.rain + "mm"
         sunshine_length_txt = response.sun + "h"
-        weather_txt = "sun: " + response.sun + "h" + "  rain: " + rain_prob_txt + "  temp: " + response.temp + "C" + "  wind: " + response.wind + "km/h"
-        terminalSize = os.popen('stty size', 'r').read().split()
-        terminalHeight = int(terminalSize[0])  
-        terminalWidth = int(terminalSize[1]) 
-        curses.init_pair(1, curses.COLOR_YELLOW, curses.COLOR_BLACK)
-        screen.addstr(terminalHeight-1,terminalWidth-len(weather_txt)-1,weather_txt, curses.color_pair(1))
-        if type(something) == 'str':
-            screen.addstr(terminalHeight-1,0, something)
-        else:
-            screen.addstr(terminalHeight-1,0,str(something))
-        screen.refresh()
-    else:
-        None
+        wind_txt = response.wind + "km/h"
+
     except:
         None
-   
+    else:
+        None 
+    weather_txt = "sun: " + sunshine_length_txt + "  rain: " + rain_prob_txt + "  temp: " + temp_txt + "  wind: " + wind_txt
+    terminalSize = os.popen('stty size', 'r').read().split()
+    terminalHeight = int(terminalSize[0])  
+    terminalWidth = int(terminalSize[1]) 
+    curses.init_pair(1, curses.COLOR_YELLOW, curses.COLOR_BLACK)
+    screen.addstr(terminalHeight-1,terminalWidth-len(weather_txt)-1,weather_txt, curses.color_pair(1))
+    if type(something) == 'str':
+        screen.addstr(terminalHeight-1,0, something)
+    else:
+        screen.addstr(terminalHeight-1,0,str(something))
+    screen.refresh()
+
 def nextRequestTime(departures, lastTime):
     nextTime = departures[0].when.strftime("%H:%M") + ':59'
     nextHour = int(nextTime[:2])
