@@ -198,6 +198,8 @@ def displayThread():
             departures = oberlandstrReqeust()
             if departures:
                 printConnectionList(departures)
+                printCurrentTimeAndDate()
+                printRequestNumber("Connecting...")
                 nextReqTime = nextRequestTime(departures, nextReqTime)
                 x=1
             else:
