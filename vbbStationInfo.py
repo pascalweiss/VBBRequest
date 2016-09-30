@@ -148,6 +148,7 @@ def temperaturePrint(something):
     temp_txt = ""
     rain_prob_txt = ""
     sunshine_length_txt = ""
+    wind_txt = ""
     
     api = WetterQueryApi("12099", "16156188")
     try:
