@@ -1,6 +1,4 @@
 import time 
-from operator import itemgetter
-from subprocess import call
 import os
 import re
 import curses
@@ -9,10 +7,6 @@ from bvggrabber.api.actualdeparture import ActualDepartureQueryApi
 from wetter24grabber.api.queryapi import WetterQueryApi
 
  
-
-
-#import pywunderground 
-
 screen = curses.initscr() 
 curses.start_color()
 curses.noecho() 
@@ -26,31 +20,6 @@ def cursesSettings():
     screen.keypad(1)
 
 __name__='__main__'
-
-def sortConnectionList(connectionList):
-    newList = []
-    afterMidnightList = []
-    highestHour = 0
-    for direction in connectionList:
-        for connection in direction:
-            time = connection[0]
-            if highestHour < time[:2]:
-                highestHour = time[:2]
-            if time[:2] < '12':
-	    #if time[:2] == '00' or time[:2] == '01' or time[:2] == '02' or time[:2] == '03' or time[:2] == '04' or time[:2] == '05':
-                afterMidnightList.append(connection)
-            else:
-                newList.append(connection)
-    if int(highestHour) > 22:
-        afterMidnightList = sorted(afterMidnightList, key=itemgetter(0))
-        newList = sorted(newList, key=itemgetter(0))
-        result = newList + afterMidnightList
-        return result
-    else:
-        result = sorted((afterMidnightList + newList), key=itemgetter(0))
-        return result
-
-
 
 # To alter the request procedure, it must be ensured, that 
 # The new approach yields a list of dictionaries, where each 
@@ -87,7 +56,7 @@ def oberlandstrReqeust():
 def getCurrentDate():
     return time.strftime('%d:%m:%Y')
 
-def getCurrentTime ():
+def getCurrentTime():
     ttime = time.localtime()
     hours = ''
     minutes = ''
@@ -110,7 +79,7 @@ def getCurrentTime ():
 def getCurrentDateForRequest():
     return time.strftime('%Y%m%d')
 
-def getCurrentTimeForRequest ():
+def getCurrentTimeForRequest():
     ttime = time.localtime()
     hours = ''
     minutes = ''
@@ -122,7 +91,6 @@ def getCurrentTimeForRequest ():
         minutes = '0' + str(ttime[4])
     else:
         minutes = str(ttime[4])
-
     return hours + ':' + minutes
 
 def printCurrentTimeAndDate():
@@ -131,25 +99,12 @@ def printCurrentTimeAndDate():
     screen.addstr(0,0,currentTime + '  ' + currentDate)
     screen.refresh()
 
-def debugPrint(something):
-    terminalSize = os.popen('stty size', 'r').read().split()
-    terminalHeight = int(terminalSize[0])  
-    terminalWidth = int(terminalSize[1]) 
-    hackText = 'Hacking BVG since 16.05.2014'
-    screen.addstr(terminalHeight-1,terminalWidth-len(hackText)-1,hackText)
-    if type(something) == 'str':
-	    screen.addstr(terminalHeight-1,0, something)
-    else:
-        screen.addstr(terminalHeight-1,0,str(something))
-    screen.refresh()
-
 def temperaturePrint(something):
     response = None
     temp_txt = ""
     rain_prob_txt = ""
     sunshine_length_txt = ""
     wind_txt = ""
-    
     api = WetterQueryApi("12099", "16156188")
     try:
         response = api.call()
@@ -157,7 +112,6 @@ def temperaturePrint(something):
         rain_prob_txt = response.rain + "mm"
         sunshine_length_txt = response.sun + "h"
         wind_txt = response.wind + "km/h"
-
     except:
         None
     else:
@@ -220,13 +174,6 @@ def printRequestNumber(number):
     terminalHeight = int(terminalSize[0])
     screen.addstr(0,terminalWidth-10-len(str(number)), 'Requests: ' + str(number))
     screen.refresh()
-
-def keyboardInput():
-    while True:
-        os.system("afplay /System/Library/Sounds/Funk.aiff")
-        input = raw_input()
-        if input == "q":
-            exit()
 
 def displayThread():
     cursesSettings()
